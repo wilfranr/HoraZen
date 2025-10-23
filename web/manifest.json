@@ -1,6 +1,6 @@
 {
-    "name": "reloj_digital_app",
-    "short_name": "reloj_digital_app",
+    "name": "Hora ZEN",
+    "short_name": "Hora ZEN",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

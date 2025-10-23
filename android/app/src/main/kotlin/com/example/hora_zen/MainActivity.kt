@@ -1,4 +1,4 @@
-package com.example.reloj_digital_app
+package com.example.hora_zen
 
 import io.flutter.embedding.android.FlutterActivity
 

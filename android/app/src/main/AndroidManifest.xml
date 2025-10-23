@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="reloj_digital_app"
+        android:label="Hora ZEN"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

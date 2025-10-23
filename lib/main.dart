@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_analog_clock/flutter_analog_clock.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -138,41 +139,89 @@ class _ClockScreenState extends State<ClockScreen> {
     }
   }
 
+  void _showAuthorInfoDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.grey[900],
+          title: const Text('Acerca de', style: TextStyle(color: Colors.white)),
+          content: const Text('Desarrollado por Yoseth Rivera\nContacto: +573137038949', style: TextStyle(color: Colors.white70)),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cerrar', style: TextStyle(color: Colors.blueAccent)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // --- CONSTRUCCIÓN DE LA INTERFAZ DE USUARIO ---
 
-  // ESTE ES EL MÉTODO BUILD QUE FALTABA
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          // Llamamos a la función que construye la barra superior
           _buildTopInfoBar(),
-          // El reloj ocupa el resto de la pantalla
           Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    DateFormat('HH:mm:ss', 'es_ES').format(_currentTime),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 120,
-                      fontWeight: FontWeight.bold,
-                      fontFeatures: [FontFeature.tabularFigures()],
-                    ),
+            child: OrientationBuilder(
+              builder: (context, orientation) {
+                final isPortrait = orientation == Orientation.portrait;
+                final timeFormat = isPortrait ? 'HH:mm' : 'HH:mm:ss';
+                final timeFontSize = isPortrait ? 80.0 : 108.0;
+
+                return Center(
+                  child: Flex(
+                    direction: isPortrait ? Axis.vertical : Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: AnalogClock(
+                          dialColor: null,
+                          hourHandColor: Colors.white,
+                          minuteHandColor: Colors.white,
+                          secondHandColor: Colors.red,
+                          markingColor: Colors.white,
+                          hourNumberColor: Colors.white,
+                          centerPointColor: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 20, width: 20),
+                      Flexible(
+                        flex: 3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              DateFormat(timeFormat, 'es_ES').format(_currentTime),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: timeFontSize,
+                                fontWeight: FontWeight.bold,
+                                fontFeatures: const [FontFeature.tabularFigures()],
+                              ),
+                            ),
+                            Text(
+                              DateFormat('EEEE, d MMMM yyyy', 'es_ES').format(_currentTime),
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    DateFormat('EEEE, d MMMM yyyy', 'es_ES').format(_currentTime),
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 24,
-                    ),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ],
@@ -180,7 +229,6 @@ class _ClockScreenState extends State<ClockScreen> {
     );
   }
 
-  // Y AQUÍ ESTÁ LA FUNCIÓN PARA LA BARRA, DEFINIDA UNA SOLA VEZ
   Widget _buildTopInfoBar() {
     return SafeArea(
       bottom: false,
@@ -213,6 +261,13 @@ class _ClockScreenState extends State<ClockScreen> {
                 Text('$_batteryLevel%', style: const TextStyle(color: Colors.white, fontSize: 16)),
                 const SizedBox(width: 8),
                 const Icon(Icons.battery_full, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                IconButton(
+                  icon: const Icon(Icons.info_outline, color: Colors.white, size: 22),
+                  onPressed: _showAuthorInfoDialog,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
               ],
             ),
           ],

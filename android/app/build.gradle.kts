@@ -14,7 +14,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.reloj_digital_app"
+    namespace = "com.example.hora_zen"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -28,7 +28,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.reloj_digital_app"
+        applicationId = "com.example.hora_zen"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
